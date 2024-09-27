@@ -496,7 +496,7 @@ display: flex;
     </ul>
     <div class="d-flex flex-column flex-sm-row justify-content-center align-items-center pt-4 mt-4 border-top">
      <ul class="list-unstyled d-flex">       
-        <li class="ms-3"><a class="link-body-emphasis" href="index.html"><img class="bi"src="https://videonot.es/wp-content/uploads/2021/11/clicdata_support-help-center-header.png" alt="AYUDA"  width="38" height="38"></a></li>
+        <li class="ms-3"><a class="link-body-emphasis" href="/index.html"><img class="bi"src="https://videonot.es/wp-content/uploads/2021/11/clicdata_support-help-center-header.png" alt="AYUDA"  width="38" height="38"></a></li>
         
         <li class="ms-3"><a class="link-body-emphasis" href="http://api.whatsapp.com/send?phone=51931993482&text= "><img class="bi"src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/1200px-WhatsApp.svg.png" alt="WhatsApp"  width="38" height="38"></a></li>
         
@@ -752,7 +752,7 @@ setTimeout(() => {
 //%0A*Fecha:* ${new Date().toLocaleDateString()} %0A*Hora:* ${new Date().toLocaleTimeString()}
 
   // Obtener la lista de productos del carrito
-  const productos = carrito.map(producto => `*Producto:* ${producto.marca}%0A*Cantidad:* ${producto.cantidad}%0A*Precio:* S/ ${producto.precio}%0A*Subtotal:* S/ ${(producto.precio * producto.cantidad)}%0A`).join('%0A');
+  const productos = carrito.map(producto => `*Producto:* ${producto.marca}%0A*Cantidad:* ${producto.cantidad}%0A*Precio:* S/ ${producto.precio}%0A*Subtotal:* S/ ${(producto.precio * producto.cantidad).toFixed(2)}%0A`).join('%0A');
 
 let rCompra = carrito.map(producto => `*${producto.cantidad} -> ${(producto.marca).toUpperCase()} : : 00`).join('%0A');
 

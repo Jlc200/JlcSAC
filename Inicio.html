@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Productos</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link href=" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <style>
+   @media (min-width: 760px) {
+    #hf{
+     display: flex;
+    }
+   } 
+  </style>
+  </head>
+<body>
+  <header>
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
+            <div class="container-fluid">
+             <form class="" id="hf">
+                 <button type="button" class="btn btn-outline-light" onclick="guardarProductos()">📤 Stock </button>
+               <button type="button" class="btn btn-outline-light" onclick="guardarInventario()">📤store </button>
+                                       <button type="button" class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#regprod">📥Agregar</button>
+                                       
+                                       
+  <div class="container mt-4">
+        <div class="input-group mb-3 navbar-collapse">
+            <input type="search" class="form-control" id="searchInput" placeholder="Buscar productos...">
+            <button class="btn btn-outline-light" type="button" onclick="buscarProducto()">Buscar</button>
+        </div>
+                 </form>
+                                                                         </div>
+                                                                         
+                                                                         
+                </nav>
+    </header>
+  <!-- Modal -->
+<div class="modal fade" id="regprod" tabindex="-1" aria-labelledby="regprodlb" data-bs-keyboard="false" data-bs-backdrop="static" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="regprodlb">Editar producto</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="limpiarFormulario()"></button>
+      </div>
+      <div class="modal-body">
+             <form id="productForm" class="needs-validation m-4" novalidate>
+                     <div class="mb-3">
+                <label for="id" class="form-label">ID:</label>
+                <input type="number" class="form-control" id="id"  readonly>
+            </div>
+                        <div class="mb-3">
+                <label for="categoria" class="form-label">Categoría:</label>
+              <select class="form-select" id="categoria" required>
+               <option selected disabled value="">SELECCIONAR</option>
+                     <option value="abarrotes">ABARROTES</option>
+                    <option value="hogar">A. HOGAR</option>
+                     <option value="bebidas">BEBIDAS</option>
+                        <option value="carnes">CARNES</option>
+                    <option value="conservas">CONSERVAS</option>
+                                                        <option value="higene">CUIDADO PERSONAL</option>
+                          <option value="escolar">ESCOLAR</option>
+                         <option value="frutas">FRUTAS</option>
+                                   <option value="lacteos">LÁCTEOS</option>
+                    <option value="limpieza">LIMPIEZA</option>
+                                                                           <option value="verduras">VERDURAS</option>
+                </select>
+                <div class="invalid-feedback">Por favor, seleccione una opción.</div>
+            </div>
+                        <div class="mb-3">
+                <label for="marca" class="form-label">Marca:</label>
+                <input type="text" class="form-control" id="marca" required>
+                <div class="invalid-feedback">Por favor, ingrese una marca.</div>
+            </div>
+                        <div class="mb-3">
+                <label for="imagen" class="form-label">Imagen:</label>
+                <input type="text" class="form-control" id="imagen" required>
+                <div class="invalid-feedback">Por favor, ingrese una URL de imagen.</div>
+            </div>
+                        <div class="mb-3">
+                <label for="precio" class="form-label">Precio:</label>
+                <input type="number" class="form-control" id="precio" required>
+                <div class="invalid-feedback">Por favor, ingrese un precio válido.</div>
+            </div>
+                         <div class="mb-3">
+                <label for="disponible" class="form-label">Disponible:</label>
+                  <select class="form-select" id="disponible" required>
+                                  <option selected value="DISPONIBLE">DISPONIBLE</option>
+                    <option value="AGOTADO">AGOTADO</option>
+                    </select>
+                <div class="invalid-feedback">Por favor, seleccione una opción.</div>
+            </div>
+                        <div class="mb-3">
+                <label for="detalles" class="form-label">Detalles:</label>
+                <textarea class="form-control" id="detalles" required></textarea>
+                <div class="invalid-feedback">Por favor, ingrese detalles del producto.</div>
+            </div>
+                                                                                   </form>
+      </div>
+      <div class="modal-footer">
+      <button type="button" class="btn btn-primary" onclick="agregarProducto()">Agregar</button>
+            <button type="button" class="btn btn-secondary" onclick="editarProducto()">Editar</button>
+            <button type="button" class="btn btn-danger" onclick="eliminarProducto()">Eliminar</button>
+       </div>
+    </div>
+  </div>
+</div>
+     <div class="container mt-5 pt-2">
+        <div id="productTable" class="mt-5 table-responsive">
+            <h2>Stock de productos</h2>
+            <table id="products" class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Categoría</th>
+                        <th>Marca</th>
+                        <th>Imagen</th>
+                        <th>Precio</th>
+                        <th>Disponible</th>
+                        <th>Detalles</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Los productos se mostrarán aquí -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="js/bootstrap.min.js"></script>
+<script src=" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="stock.js"></script>
+    <script>
+// Inicializar el arreglo vacío
+const imgs = document.getElementById("imagen");
+  imgs.addEventListener('focus', () => {
+    imgs.select();
+  });
+let stockProducto = [];
+mostrarProductos();
+// Cargar los productos desde el archivo stock.js
+// (Asumiendo que el archivo stock.js está en la misma carpeta)
+fetch('stock.js')
+    .then(response => response.text())
+    .then(data => {
+        // Evaluar el código JavaScript del archivo
+        eval(data);
+        // Ahora stockProductos contiene los datos del archivo
+        mostrarProductos();
+    })
+    .catch(error => {
+        //console.error("Error al cargar stock.js:", error);
+    });
+let currentProductId = null; // Para editar
+function agregarProducto() {
+    const categoria = document.getElementById("categoria").value;
+    const marca = document.getElementById("marca").value;
+    const imagen = document.getElementById("imagen").value;
+    const precio = document.getElementById("precio").value;
+    const disponible = document.getElementById("disponible").value;
+    const detalles = document.getElementById("detalles").value.split("\n");
+    // Validar si hay campos vacíos
+    if (categoria && marca && imagen && !isNaN(precio) && disponible && detalles.length > 0) {
+        const newProduct = {
+            id: stockProductos.length > 0 ? Math.max(...stockProductos.map(p => p.id)) + 1 : 1,
+            categoria: categoria,
+            marca: marca,
+            imagen: imagen,
+            precio: precio,
+            disponible: disponible,
+            detalles: detalles
+        };
+        stockProductos.push(newProduct);
+        // Guardar en localStorage
+        localStorage.setItem('stockProductos', JSON.stringify(stockProductos));
+        mostrarProductos();
+        limpiarFormulario();
+        form.classList.remove('was-validated');
+    } else {
+        alert("Por favor, complete todos los campos del formulario.");
+        form.classList.add('was-validated');
+    }
+}
+function editarProducto() {
+    if (currentProductId) {
+        const index = stockProductos.findIndex(p => p.id === currentProductId);
+        if (index !== -1) {
+            stockProductos[index] = {
+                id: currentProductId,
+                categoria: document.getElementById("categoria").value,
+                marca: document.getElementById("marca").value, // Convertir a mayúsculas
+                imagen: document.getElementById("imagen").value,
+                precio: document.getElementById("precio").value,
+                disponible: document.getElementById("disponible").value,
+                detalles: document.getElementById("detalles").value.split("\n")
+            };
+            // Guardar en localStorage
+            localStorage.setItem('stockProductos', JSON.stringify(stockProductos));
+            mostrarProductos();
+            limpiarFormulario();
+            currentProductId = null;
+         }
+    }
+}
+function eliminarProducto() {
+    if (currentProductId) {
+        const index = stockProductos.findIndex(p => p.id === currentProductId);
+        if (index !== -1) {
+            stockProductos.splice(index, 1);
+            // Guardar en localStorage
+            localStorage.setItem('stockProductos', JSON.stringify(stockProductos));
+            mostrarProductos();
+            limpiarFormulario();
+            currentProductId = null;
+         }
+    }
+}
+function mostrarProductos(products = stockProductos) {
+    const productsTable = document.getElementById("products").getElementsByTagName("tbody")[0];
+    productsTable.innerHTML = "";
+     products.forEach(product => {
+        const row = productsTable.insertRow();
+        const idCell = row.insertCell();
+        const categoriaCell = row.insertCell();
+        const marcaCell = row.insertCell();
+        const imagenCell = row.insertCell();
+        const precioCell = row.insertCell();
+        const disponibleCell = row.insertCell();
+        const detallesCell = row.insertCell();
+        idCell.textContent = product.id;
+        categoriaCell.textContent = product.categoria;
+        marcaCell.textContent = product.marca;
+        imagenCell.innerHTML = `<img src="${product.imagen}" alt="${product.marca}" width="50">`;
+        precioCell.textContent = product.precio;
+        disponibleCell.textContent = product.disponible;
+        detallesCell.textContent = product.detalles.join(", ");
+         // Agregar evento de clic a la fila
+        row.addEventListener("click", () => {
+            currentProductId = product.id; // Guarda el ID del producto seleccionado
+            // Llena el formulario con los datos del producto seleccionado
+            document.getElementById("id").value = product.id;
+            document.getElementById("categoria").value = product.categoria;
+            document.getElementById("marca").value = product.marca;
+            document.getElementById("imagen").value = product.imagen;
+            document.getElementById("precio").value = product.precio;
+            document.getElementById("disponible").value = product.disponible;
+            document.getElementById("detalles").value = product.detalles.join("\n");
+            // Mostrar el modal         
+         });         
+        // Add the data-bs-toggle and data-bs-target attributes to the row
+        row.setAttribute("data-bs-toggle", "modal");
+        row.setAttribute("data-bs-target", "#regprod");
+    });        
+                         
+                   
+    
+}
+function limpiarFormulario() {
+    document.getElementById("productForm").reset();
+}
+// Validar formulario al enviar
+const form = document.getElementById('productForm');
+form.addEventListener('submit', (event) => {
+    if (!form.checkValidity()) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+    form.classList.add('was-validated');
+}, false);
+// Función para buscar productos por marca
+function buscarProducto() {
+    const searchTerm = document.getElementById("searchInput").value.toLowerCase(); // Obtener el término de búsqueda
+    const filteredProducts = stockProductos.filter(product => product.marca.toLowerCase().includes(searchTerm));
+    mostrarProductos(filteredProducts); // Mostrar los productos filtrados
+}
+// Función para guardar el arreglo de productos en un archivo .txt
+function guardarProductos() {
+    // Crear la cadena de texto con la estructura deseada
+    let txtContent = "const stockProductos = [\n";
+    stockProductos.forEach((product, index) => {
+        txtContent += `    { id: ${product.id}, categoria: "${product.categoria}", marca: "${product.marca}", imagen: "${product.imagen}", precio: ${product.precio}, disponible: "${product.disponible}", detalles: [${product.detalles.map(detalle => `"${detalle}"`).join(', ')}] }${index < stockProductos.length - 1 ? ',' : ''}\n`;
+    });
+    txtContent += "];";
+    // Obtener la hora actual
+    const days= new Date().toLocaleDateString();
+        const hora = new Date().toLocaleTimeString();
+    // Agregar la hora al final del archivo
+    txtContent += `\n// Feha de modificacion:${days} ${hora}`;
+    // Crear un archivo .txt con el nombre "stockProductos.txt"
+    const file = new Blob([txtContent], { type: 'text/plain; charset=utf-8' });
+   const fileURL = URL.createObjectURL(file);
+    // Crear un enlace de descarga
+    const link = document.createElement('a');
+    link.href = fileURL;
+    // Personalizar el nombre del archivo con la hora actual
+    const fileName = `stock.js`;
+    link.download = fileName;
+     // Simular un clic en el enlace para descargar el archivo
+    link.click();
+    // Liberar el objeto URL
+    URL.revokeObjectURL(fileURL);
+    // Vaciar localStorage
+    localStorage.clear();
+        window.Android.guardarArchivo(txtContent);
+}
+// Función para guardar el Inventario de productos en un archivo .csv
+function guardarInventario() {
+    // Crear la cadena de texto con la estructura deseada
+    let txtContent = "Clave,Unidad,Nombre,Cantidad,Costo,Precio,Cantidad Mínima,Precios Adicionales,Información Adicional,Categoría,Costo Promedio,\n";
+    stockProductos.forEach((product, index) => {
+        txtContent += `,,${product.marca},0.0,${product.precio},${product.precio},0.0,,,${product.categoria},${product.precio},\n`;
+    });
+    const fecha= new Date().toLocaleDateString();
+         // Crear un archivo .txt con el nombre "inventario.csv"
+    const file = new Blob([txtContent], { type: 'text/plain; charset=utf-8' });
+   const fileURL = URL.createObjectURL(file);
+    // Crear un enlace de descarga
+    const link = document.createElement('a');
+    link.href = fileURL;
+    // Personalizar el nombre del archivo con la hora actual
+    const fileName = `inventario-${fecha}.csv`;
+    link.download = fileName;
+     // Simular un clic en el enlace para descargar el archivo
+    link.click();
+    // Liberar el objeto URL
+    URL.revokeObjectURL(fileURL);
+        window.Android.guardarInventario(txtContent);
+}
+    </script>
+</body>
+</html>
